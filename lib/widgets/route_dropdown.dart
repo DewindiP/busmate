@@ -13,7 +13,7 @@ class RouteDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      value: selectedRoute, // Default selected value
+      value: selectedRoute, 
       decoration: InputDecoration(
         labelText: 'Select Route', // Field label
         border: OutlineInputBorder(
@@ -24,8 +24,15 @@ class RouteDropdown extends StatelessWidget {
         DropdownMenuItem(value: 'Colombo - Kandy', child: Text('Colombo - Kandy')),
         DropdownMenuItem(value: 'Colombo - Galle', child: Text('Colombo - Galle')),
         DropdownMenuItem(value: 'Colombo - Jaffna', child: Text('Colombo - Jaffna')),
+        DropdownMenuItem(value: 'Colombo - Matara', child: Text('Colombo - Matara')),
+        DropdownMenuItem(value: 'Colombo - Hambantota', child: Text('Colombo - Hambantota')),
+        DropdownMenuItem(value: 'Colombo - Nuwara Eliya', child: Text('Colombo - Nuwara Eliya')),
+        DropdownMenuItem(value: 'Colombo - Trincomalee', child: Text('Colombo - Trincomalee')),
+        DropdownMenuItem(value: 'Colombo - kurunegala', child: Text('Colombo - kurunegala')),
+        DropdownMenuItem(value: 'Colombo - Kegalle', child: Text('Colombo - Kegalle')),
+        DropdownMenuItem(value: 'Colombo - Anuradhapura', child: Text('Colombo - Anuradhapura')),
       ],
-      onChanged: onChanged, // Trigger when user selects
+      onChanged: onChanged, 
     );
   }
 }

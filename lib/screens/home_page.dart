@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import '../utils/app_colors.dart';
 import '../widgets/route_dropdown.dart';
-import '../widgets/date_picker.dart';
-import '../widgets/primary_button.dart';
+import '../widgets/bus_dropdown.dart';
+import 'seat_selection_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,25 +11,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Default selected route
   String selectedRoute = 'Colombo - Kandy';
+  String selectedBus = '';
+  String travelDate = '';
 
-  // Default selected date (today)
-  DateTime selectedDate = DateTime.now();
+  final dateController = TextEditingController();
 
-  // Function to show date picker
+  @override
+  void dispose() {
+    dateController.dispose();
+    super.dispose();
+  }
+
+  // Open Date Picker
   Future<void> _pickDate() async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: DateTime.now().add(const Duration(days: 1)),
       firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 30)),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
     );
 
-    // If user selects a date, update state
     if (picked != null) {
       setState(() {
-        selectedDate = picked;
+        travelDate = '${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}';
+        dateController.text = travelDate;
       });
     }
   }
@@ -38,76 +43,68 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Blue-grey background like your UI images
-      backgroundColor: AppColors.background,
-
-      appBar: AppBar(
-        title: Row(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Icon(
-        Icons.directions_bus,
-        size: 28,
-        color: Colors.white,
-      ),
-        const SizedBox(width: 8),
-      const Text('BusMate'),
-    ],
-  ),
-        centerTitle: true,
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
-      ),
-
+      appBar: AppBar(title: const Text('Bus Booking')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            // Card container for clean UI
-            Card(
-              color: AppColors.card,
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+            // Route dropdown
+            RouteDropdown(
+              selectedRoute: selectedRoute,
+              onChanged: (value) {
+                setState(() {
+                  selectedRoute = value!;
+                  selectedBus = ''; 
+                });
+              },
+            ),
+            const SizedBox(height: 16),
+
+            // Bus dropdown
+            BusDropdown(
+              selectedBus: selectedBus,
+              selectedRoute: selectedRoute,
+              onChanged: (value) {
+                setState(() {
+                  selectedBus = value!;
+                });
+              },
+            ),
+            const SizedBox(height: 16),
+
+            // Date picker
+            TextField(
+              controller: dateController,
+              readOnly: true,
+              decoration: const InputDecoration(
+                labelText: 'Travel Date',
+                border: OutlineInputBorder(),
+                suffixIcon: Icon(Icons.calendar_today),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    // Route dropdown
-                    RouteDropdown(
-                      selectedRoute: selectedRoute,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedRoute = value!;
-                        });
-                      },
-                    ),
+              onTap: _pickDate,
+            ),
+            const SizedBox(height: 30),
 
-                    const SizedBox(height: 16),
-
-                    // Date picker
-                    DatePicker(
-                      selectedDate: selectedDate,
-                      onTap: _pickDate,
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    // Continue button
-                    PrimaryButton(
-                      text: 'Continue',
-                      onPressed: () {
-                        // Later: navigate to seat selection screen
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Proceeding to seat selection'),
+            // Next button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: (selectedBus.isEmpty || travelDate.isEmpty)
+                    ? null
+                    : () {
+                        // Navigate to seat selection
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => SeatSelection(
+                              route: selectedRoute,
+                              date: travelDate,
+                              bus: selectedBus,
+                            ),
                           ),
                         );
                       },
-                    ),
-                  ],
-                ),
+                child: const Text('Select Seat'),
               ),
             ),
           ],

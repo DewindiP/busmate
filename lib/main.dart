@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/splash.dart';
+import 'utils/app_colors.dart';
 
 void main() {
   runApp(const BusMateApp());
@@ -14,9 +15,31 @@ class BusMateApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'BusMate',
       theme: ThemeData(
-        useMaterial3: true,
+        scaffoldBackgroundColor: AppColors.background,
+        primaryColor: AppColors.primary,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: AppColors.primary,
+          foregroundColor: Colors.white,
+          elevation: 0,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+        cardTheme: CardTheme(
+          color: AppColors.card,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
       ),
-      home: const Splash(), // 👈 App starts here
+      home: const Splash(),
     );
   }
 }

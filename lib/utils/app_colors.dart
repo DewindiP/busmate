@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Main background color (blue-grey like the UI images)
+  // Background
   static const Color background = Color(0xFFF1F5F9);
 
-  // Primary blue color for buttons and highlights
+  // Primary blue
   static const Color primary = Colors.blue;
 
-  // Card background color
+  // Card
   static const Color card = Colors.white;
 
-  // Text colors
+  // Text
   static const Color textPrimary = Colors.black87;
   static const Color textSecondary = Colors.black54;
+
+  // Seats
+  static const Color availableSeat = Colors.green;
+  static const Color bookedSeat = Colors.red;
+  static const Color selectedSeat = Colors.orange;
 }
