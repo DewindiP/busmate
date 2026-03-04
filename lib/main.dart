@@ -32,7 +32,7 @@ class BusMateApp extends StatelessWidget {
             ),
           ),
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           color: AppColors.card,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
